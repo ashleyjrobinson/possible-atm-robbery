@@ -1,6 +1,10 @@
 Config = {}
 
-Config.MinimumPolice = 0
+Config.UsePoliceName = false      -- If this is set to "false", server will check for jobname: "police", otherwise it will check for job type for newer qb-core builds
+Config.PoliceJobType = "leo"      -- Job type used by your server - if "Config.UsePoliceName = false"
+Config.PoliceJobName = "police"   -- Police role in your server - if "Config.UsePoliceName = true"
+Config.MinimumPolice = 1         -- Minimum amount of police required to start a robbery
+
 Config.RequiredItem = 'atmhacker'
 
 Config.InventoryType = 'ox_inventory' -- 'qb-inventory' or 'ox_inventory'
