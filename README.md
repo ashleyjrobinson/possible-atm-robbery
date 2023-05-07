@@ -3,7 +3,7 @@
 [Discord/ Support](https://discord.gg/Gnb2S7uAdG)
 
 
-##Item:
+## Item:
 
 qb-inventory/ lj-inventory -
 
@@ -13,7 +13,7 @@ create an item named phone_hacker in your qb-core/shared/items.lua
 	['atmhacker'] 			 = {['name'] = 'atmhacker', 			  	['label'] = 'ATM Hacker', 			['weight'] = 750, 		['type'] = 'item', 		['image'] = 'atmhacker.png', 	['unique'] = false, 	['useable'] = true, 	['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = 'Use for malicious activities..'},
 ```
 
-##ox_inventory -
+## ox_inventory -
 
 create an item named phone_hacker in your qb-core/shared/items.lua
 
@@ -25,11 +25,11 @@ create an item named phone_hacker in your qb-core/shared/items.lua
 	},
 ```
 
-##Image:
+## Image:
 
 I've placed the inventory image within the assets folder, take this imagae and put it in your qb-inventory or ox-inventory imagery folder. Then delete the assets folder within here.
 
-##Dispatch:
+## Dispatch:
 
 Project Sloth Dispatch - https://github.com/Project-Sloth/ps-dispatch
 
@@ -72,7 +72,7 @@ end
 exports('ATMHacking', ATMHacking)
 ```
 
-##Support:
+## Support:
 
 Join my Discord for support and roles.
 
