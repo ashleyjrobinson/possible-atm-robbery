@@ -1,7 +1,7 @@
 # Possible ATM Robberies
 
 
-[Preview](https://www.youtube.com/watch?v=f_rKE9o01IQ)
+[Preview](https://www.youtube.com/watch?v=f_rKE9o01IQ) //
 [Discord/ Support](https://discord.gg/Gnb2S7uAdG)
 
 
