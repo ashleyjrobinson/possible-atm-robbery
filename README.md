@@ -1,34 +1,47 @@
-Item:
+# Possible ATM Robberies
+
+[Discord/ Support](https://discord.gg/Gnb2S7uAdG)
+
+
+##Item:
 
 qb-inventory/ lj-inventory -
 
 create an item named phone_hacker in your qb-core/shared/items.lua
-	['atmhacker'] 			 = {['name'] = 'atmhacker', 			  	['label'] = 'ATM Hacker', 			['weight'] = 750, 		['type'] = 'item', 		['image'] = 'atmhacker.png', 	['unique'] = false, 	['useable'] = true, 	['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = 'Use for malicious activities..'},
 
-ox_inventory -
+```
+	['atmhacker'] 			 = {['name'] = 'atmhacker', 			  	['label'] = 'ATM Hacker', 			['weight'] = 750, 		['type'] = 'item', 		['image'] = 'atmhacker.png', 	['unique'] = false, 	['useable'] = true, 	['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = 'Use for malicious activities..'},
+```
+
+##ox_inventory -
 
 create an item named phone_hacker in your qb-core/shared/items.lua
 
+```
 	['atmhacker'] = {
 		label = 'ATM Hacker',
 		weight = 750,
         description = 'Use for malicious activities..',
 	},
+```
 
-Image:
+##Image:
 
-I've place the inventory image within the assets folder, take this imagae and put it in your qb-inventory or ox-inventory imagery folder. Then delete the img folder within here.
+I've placed the inventory image within the assets folder, take this imagae and put it in your qb-inventory or ox-inventory imagery folder. Then delete the assets folder within here.
 
-Dispatch:
+##Dispatch:
 
 Project Sloth Dispatch - https://github.com/Project-Sloth/ps-dispatch
 
 Copy & Paste this into ps-dispatch/server/sv_dispatchcodes.lua
 
+```
 ["atmhacking"] =  {displayCode = '10-90', description = "Potential ATM hacking activity reported..", radius = 0, recipientList = {'police'}, blipSprite = 772, blipColour = 59, blipScale = 1.5, blipLength = 2, sound = "robberysound", offset = "false", blipflash = "false"},
+```
 
 Copy & Paste this into ps-dispatch/client/cl_extraalerts.lua
 
+```
 ---------------------------
 -- Possible ATM Hacking --
 ---------------------------
@@ -57,8 +70,9 @@ local function ATMHacking()
     })
 end
 exports('ATMHacking', ATMHacking)
+```
 
-Support:
+##Support:
 
 Join my Discord for support and roles.
 
