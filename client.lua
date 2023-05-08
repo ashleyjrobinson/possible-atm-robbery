@@ -222,8 +222,7 @@ end)
 
 RegisterNetEvent('possible-atm-robbery:success')
 AddEventHandler('possible-atm-robbery:success', function()
-    local src = source
-    TriggerServerEvent('possible-atm-robbery:removeRequiredItem', src)
-    TriggerServerEvent('possible-atm-robbery:giveReward', src)
+    TriggerServerEvent('possible-atm-robbery:removeRequiredItem')
+    TriggerServerEvent('possible-atm-robbery:giveReward')
 end)
 
