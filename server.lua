@@ -1,7 +1,6 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-if Config.InventoryType == "ox_inventory" then
-    local ox_inventory = exports.ox_inventory
-end
+local ox_inventory = exports.ox_inventory
+
 local cashA = Config.MinReward
 local cashB = Config.MaxReward
 
@@ -56,7 +55,7 @@ AddEventHandler('possible-atm-robbery:giveReward', function()
         end
     elseif Config.InventoryType == "ox_inventory" then
         if Config.Cash then
-            ox_inventory:AddItem(src, cash, reward)
+            ox_inventory:AddItem(src, 'money', reward)
         else
             ox_inventory:AddItem(src, Config.DirtyCashType, reward)
         end
