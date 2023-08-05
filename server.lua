@@ -1,5 +1,9 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-local ox_inventory = exports.ox_inventory
+if Config.InventoryType == "ox_inventory" then
+    local ox_inventory = exports.ox_inventory
+end
+local cashA = Config.MinReward
+local cashB = Config.MaxReward
 
 local cachedPoliceAmount = {}
 
@@ -37,13 +41,25 @@ RegisterServerEvent('possible-atm-robbery:giveReward')
 AddEventHandler('possible-atm-robbery:giveReward', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    local reward = math.random(Config.MinReward, Config.MaxReward)
+    local reward = math.random(cashA, cashB)
+	local markedBillsBagsAmount = math.random(3,5) -- Range of marked bills bags for the player to randomly recieve
+	local markedBillsBagsWorth = {
+		worth = math.random(cashA, cashB)
+    }
     if Config.InventoryType == "qb-inventory" then
-        if Player.Functions.AddItem(Config.DirtyCashType, reward) then
-            TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[Config.DirtyCashType], "add", reward)
+        if Config.Cash then
+            Player.Functions.AddMoney('cash', reward)
+            TriggerClientEvent('QBCore:Notify', src, 'You have received $'..reward..' in cash', 'success')
+        else
+        Player.Functions.AddItem(Config.DirtyCashType, markedBillsBagsAmount, false, markedBillsBagsWorth)
+        TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items['markedbills'], "add")
         end
-        elseif Config.InventoryType == "ox_inventory" then
+    elseif Config.InventoryType == "ox_inventory" then
+        if Config.Cash then
+            ox_inventory:AddItem(src, cash, reward)
+        else
             ox_inventory:AddItem(src, Config.DirtyCashType, reward)
         end
+    end
 end)
 
