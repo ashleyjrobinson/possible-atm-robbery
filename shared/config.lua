@@ -16,4 +16,4 @@ Config.Cash = false -- set to true if you don't want to give cash
 Config.DirtyCashType = 'markedbills'  -- 'markedbills' or your dirty cash item
 
 Config.MinReward = 500 -- Minimum reward for hacking a phone
-Config.MaxReward = 2000 -- Maximum reward for hacking a phone
+Config.MaxReward = 2000               -- Maximum reward for hacking a phone

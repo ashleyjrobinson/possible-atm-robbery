@@ -6,15 +6,15 @@ author 'Possible'
 description 'ATM Robberies for QBCore'
 version '1.0.0'
 
+shared_scripts {
+    'shared/*'
+    -- '@ox_lib/init.lua'
+}
+
 client_scripts {
-    'client.lua'
+    'client/*'
 }
 
 server_scripts {
-    'server.lua'
-}
-
-shared_scripts {
-	'@ox_lib/init.lua',
-	'config.lua'
+    'server/*'
 }
