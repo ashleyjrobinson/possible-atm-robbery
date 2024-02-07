@@ -1,3 +1,5 @@
+local config = require('shared.config')
+
 local QBCore = exports['qb-core']:GetCoreObject()
 local copsCalled = false
 local CurrentCops = 0
@@ -91,7 +93,7 @@ local optionATM = {
         event = 'possible-atm:startHack',
         icon = 'fa-solid fa-user-ninja',
         label = 'Hack ATM',
-        items = Config.RequiredItem,
+        items = config.RequiredItem,
         distance = 2.5,
         onSelect = function()
             TriggerEvent('possible-atm-robbery:startHack')
@@ -105,7 +107,7 @@ local qbTargetOptionATM = {
         event = 'possible-atm:startHack',
         icon = 'fa-solid fa-user-ninja',
         label = 'Hack ATM',
-        item = Config.RequiredItem,
+        item = config.RequiredItem,
         action = function()
             TriggerEvent('possible-atm-robbery:startHack')
         end       
@@ -113,9 +115,9 @@ local qbTargetOptionATM = {
 }
 
 local function InitializeTargetSystem()
-    if Config.TargetType == "ox_target" then
+    if config.TargetType == "ox_target" then
         exports.ox_target:addModel(modelsATM, optionATM)
-    elseif Config.TargetType == "qb-target" then
+    elseif config.TargetType == "qb-target" then
         exports['qb-target']:AddTargetModel(modelsATM, {
             options = qbTargetOptionATM,
             distance = 2.5
@@ -130,7 +132,7 @@ local function OnHackDone(success)
     if success then
         DestroyAllProps()
         TriggerEvent('mhacking:hide')
-        if Config.OxLib then
+        if config.OxLib then
         if lib.progressBar({
             duration = 7500,
             label = 'Looting ATM Machine',
@@ -183,7 +185,7 @@ local function OnHackDone(success)
             end)
     end
     else
-        if Config.OxLib then
+        if config.OxLib then
         lib.notify({
             title = 'Failed',
             description = 'Failed to hack ATM, signal lost!',
@@ -201,13 +203,13 @@ end
 RegisterNetEvent('possible-atm-robbery:startHack')
 AddEventHandler('possible-atm-robbery:startHack', function()
     QBCore.Functions.TriggerCallback('possible-atm-robbery:server:getCops', function(cops)
-        if cops >= Config.MinimumPolice then
+        if cops >= config.MinimumPolice then
             AnimMode()
             PoliceCall()
             TriggerEvent("mhacking:show")
             TriggerEvent("mhacking:start", math.random(6, 7), math.random(12, 15), OnHackDone)
         else
-            if Config.OxLib then
+            if config.OxLib then
                 lib.notify({
                     title = 'Not right now.',
                     description = 'Not enough police online!',
