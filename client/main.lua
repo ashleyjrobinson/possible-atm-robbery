@@ -101,28 +101,8 @@ local optionATM = {
     }
 }
 
-local qbTargetOptionATM = {
-    {
-        name = 'possible-atm:hackATM',
-        event = 'possible-atm:startHack',
-        icon = 'fa-solid fa-user-ninja',
-        label = 'Hack ATM',
-        item = config.RequiredItem,
-        action = function()
-            TriggerEvent('possible-atm-robbery:startHack')
-        end       
-    }
-}
-
 local function InitializeTargetSystem()
-    if config.TargetType == "ox_target" then
-        exports.ox_target:addModel(modelsATM, optionATM)
-    elseif config.TargetType == "qb-target" then
-        exports['qb-target']:AddTargetModel(modelsATM, {
-            options = qbTargetOptionATM,
-            distance = 2.5
-        })
-    end
+    exports.ox_target:addModel(modelsATM, optionATM)
 end
 
 InitializeTargetSystem()
@@ -132,7 +112,6 @@ local function OnHackDone(success)
     if success then
         DestroyAllProps()
         TriggerEvent('mhacking:hide')
-        if config.OxLib then
         if lib.progressBar({
             duration = 7500,
             label = 'Looting ATM Machine',
@@ -166,34 +145,12 @@ local function OnHackDone(success)
                 type = 'error'
             })
         end
-        else
-            QBCore.Functions.Progressbar("lootATM", 'Looting ATM Machine', 7500, false, true, {
-                disableMovement = true,
-                disableCarMovement = true,
-                disableMouse = false,
-                disableCombat = true,
-            }, {
-                animDict = 'oddjobs@shop_robbery@rob_till',
-                anim = 'loop',
-                flags = 1,
-            }, {}, {}, function() -- Done
-                TriggerEvent('possible-atm-robbery:success')
-                ClearPedTasks(PlayerPedId())
-            end, function() -- Cancel
-                ClearPedTasks(PlayerPedId())
-                QBCore.Functions.Notify('ATM Signal lost? Try again!', 'error', 1500)
-            end)
-    end
     else
-        if config.OxLib then
         lib.notify({
             title = 'Failed',
             description = 'Failed to hack ATM, signal lost!',
             type = 'error'
         })
-        else
-        QBCore.Functions.Notify('Failed to hack ATM, signal lost!', 'error', 1500)
-        end
         TriggerEvent("mhacking:hide")
         DestroyAllProps()
     end
@@ -209,15 +166,11 @@ AddEventHandler('possible-atm-robbery:startHack', function()
             TriggerEvent("mhacking:show")
             TriggerEvent("mhacking:start", math.random(6, 7), math.random(12, 15), OnHackDone)
         else
-            if config.OxLib then
-                lib.notify({
-                    title = 'Not right now.',
-                    description = 'Not enough police online!',
-                    type = 'error'
-                })
-            else
-                QBCore.Functions.Notify('Not enough police online!', 'error', 1500)
-            end
+            lib.notify({
+                title = 'Not right now.',
+                description = 'Not enough police online!',
+                type = 'error'
+            })
         end
     end)
 end)
