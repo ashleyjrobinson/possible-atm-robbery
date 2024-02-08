@@ -17,7 +17,7 @@ create an item named phone_hacker in your qb-core/shared/items.lua
 
 ## ox_inventory -
 
-create an item named phone_hacker in your qb-core/shared/items.lua
+create an item named phone_hacker in your ox_inventory/data/items.lua
 
 ```
 	['atmhacker'] = {
@@ -31,7 +31,7 @@ create an item named phone_hacker in your qb-core/shared/items.lua
 
 I've placed the inventory image within the assets folder, take this imagae and put it in your qb-inventory or ox-inventory imagery folder. Then delete the assets folder within here.
 
-## Dispatch:
+## Dispatch (or easily add your own):
 
 Project Sloth Dispatch - https://github.com/Project-Sloth/ps-dispatch
 
@@ -74,8 +74,14 @@ end
 exports('ATMHacking', ATMHacking)
 ```
 
+## Compatibility:
+- QBCore
+- QBOX
+- ESX
+
 ## Dependencies:
 - ox_lib
+- ox_target
 - ox_inventory or qb-inventory
 - rpemotes or scully_emotemenu
 
