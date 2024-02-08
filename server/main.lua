@@ -55,20 +55,20 @@ RegisterServerEvent('possible-atm-robbery:server:giveReward', function()
 	local markedBillsBagsWorth = {
 		worth = math.random(cashA, cashB)
     }
-        if Player.Functions.RemoveItem(config.RequiredItem, 1) then
+    if Player.Functions.RemoveItem(config.RequiredItem, 1) then
             TriggerClientEvent("inventory:client:ItemBox", src, QBCore.Shared.Items[config.RequiredItem], "remove", 1)
-        end
-        if config.Cash then
-            Player.Functions.AddMoney('cash', reward)
-            TriggerClientEvent('QBCore:Notify', src, 'You have received $'..reward..' in cash', 'success')
-        else
-            Player.Functions.AddItem(config.DirtyCashType, markedBillsBagsAmount, false, markedBillsBagsWorth)
-            TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items['markedbills'], "add")
-        end
-        elseif config.InventoryType == "ox_inventory" then
-            ox_inventory:RemoveItem(src, config.RequiredItem, 1)
-            ox_inventory:AddItem(src, config.CashItem, reward)
-        end
+    end
+    if config.Cash then
+        Player.Functions.AddMoney('cash', reward)
+        TriggerClientEvent('QBCore:Notify', src, 'You have received $'..reward..' in cash', 'success')
+    else
+        Player.Functions.AddItem(config.DirtyCashType, markedBillsBagsAmount, false, markedBillsBagsWorth)
+        TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items['markedbills'], "add")
+    end
+    elseif config.InventoryType == "ox_inventory" then
+        ox_inventory:RemoveItem(src, config.RequiredItem, 1)
+        ox_inventory:AddItem(src, config.CashItem, reward)
+    end
     
     if config.PossibleTerritories and config.Framework == "qb" then
         TriggerEvent('possible-atm-robbery:server:rewardGangInfluence')
@@ -77,14 +77,9 @@ RegisterServerEvent('possible-atm-robbery:server:giveReward', function()
     end 
 
     if config.PossibleGangLevel and config.Framework == "qb" then
-        local src = source
-        local Player = QBCore.Functions.GetPlayer(src)
-        local gangName = Player.PlayerData.gang.name
-        if gangName ~= "none" then
-            exports['possible-gang-levels']:AddGangXPForPlayer(src, gangName, 5) -- Replace with the amount of XP to give
-        end
+        TriggerEvent('possible-atm-robbery:server:rewardGangXP')
     elseif config.PossibleGangLevel and config.Framework == "esx" then
-        exports['possible-gang-levels']:AddGangXPForPlayer(src, gangName, 5) -- Replace with the amount of XP to give
+        TriggerEvent('possible-atm-robbery:server:rewardGangXP')
     end
 end)
 
