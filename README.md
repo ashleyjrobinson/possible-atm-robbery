@@ -84,6 +84,7 @@ exports('ATMHacking', ATMHacking)
 - ox_target
 - ox_inventory or qb-inventory
 - rpemotes or scully_emotemenu
+- mHacking
 
 ## Buy Me a Coffee:
 
