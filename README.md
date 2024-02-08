@@ -74,6 +74,11 @@ end
 exports('ATMHacking', ATMHacking)
 ```
 
+## Dependencies:
+- ox_lib
+- ox_inventory or qb-inventory
+- rpemotes or scully_emotemenu
+
 ## Buy Me a Coffee:
 
 If you enjoy my work feel free to buy me a coffee :)

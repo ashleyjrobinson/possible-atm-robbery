@@ -1,0 +1,13 @@
+{
+    "target_label": "Hack ATM",
+    "looting_progress_label": "Looting ATM Machine..",
+    "looting_success_title": "Good Job!",
+    "looting_success_description": "You successfully hacked the ATM and grabbed the loot!",
+    "looting_failed_title": "Failed!",
+    "looting_failed_description": "Failed to hack ATM, signal lost!",
+    "looting_signal_lost_title": "Signal Lost",
+    "looting_signal_lost_description": "ATM Signal lost? Try again!",
+    "not_enough_police_title": "Not Enough Police",
+    "not_enough_police_description": "There are not enough police online to hack the ATM!"
+}
+  
