@@ -70,11 +70,10 @@ RegisterServerEvent('possible-atm-robbery:server:giveReward', function()
         ox_inventory:AddItem(src, config.CashItem, reward)
     end
     
-    if config.PossibleTerritories and config.Framework == "qb" then
-        TriggerEvent('possible-atm-robbery:server:rewardGangInfluence')
-    elseif config.PossibleTerritories and config.Framework == "esx" then
-        TriggerEvent('possible-atm-robbery:server:rewardGangInfluence')
-    end 
+    if config.PossibleTerritories then
+        exports['possible-territories']:AddItemToStash(src, config.TerritoriesRewardItem, config.TerritoriesRewardAmount)
+        exports['possible-territories']:UpdateInfluenceForGangInTerritory(src, config.TerritoriesInfluence)
+    end
 
     if config.PossibleGangLevel and config.Framework == "qb" then
         TriggerEvent('possible-atm-robbery:server:rewardGangXP')
@@ -83,51 +82,16 @@ RegisterServerEvent('possible-atm-robbery:server:giveReward', function()
     end
 end)
 
-RegisterServerEvent('possible-atm-robbery:server:rewardGangInfluence', function()
-    if config.Framework == "qb" then
-        local src = source
-        local player = QBCore.Functions.GetPlayer(src)
-        if not player then return end
-        local gangID = Player.PlayerData.gang.name
-        
-        local territoryName = exports['possible-territories']:GetPlayerTerritory(src)
-        if not territoryName then return end
-
-        local influence = 10 -- Influence Gained Per hack
-        local cashAmount = 30 -- Amount added to stash per completion, regardless of who completes
-        exports['possible-territories']:AddCashToSafe(territoryName, cashAmount)
-        exports['possible-territories']:UpdateInfluenceForGangInTerritory(territoryName, gangID, influence)
-    elseif config.Framework == "esx" then
-        local source = source
-        local xPlayer = ESX.GetPlayerFromId(source)
-        if not xPlayer then return end
-        local gangID = xPlayer.job.name
-
-        local territoryName = exports['possible-territories']:GetPlayerTerritory(source)
-        if not territoryName then return end
-
-        local influence = 10 -- Influence Gained Per hack
-        local cashAmount = 30 -- Amount added to stash per completion, regardless of who completes
-        exports['possible-territories']:AddCashToSafe(territoryName, cashAmount)
-        exports['possible-territories']:UpdateInfluenceForGangInTerritory(territoryName, gangID, influence)
-    end
-end) 
-
 RegisterServerEvent('possible-atm-robbery:server:rewardGangXP', function()
+    local src = source
     if config.Framework == "qb" then
-        local src = source
         local Player = QBCore.Functions.GetPlayer(src)
         local gangName = Player.PlayerData.gang.name
-
-    if gangName ~= "none" then
-        exports['possible-gang-levels']:AddGangXPForPlayer(src, gangName, 5) -- Replace with the amount of XP to give
-    end
+        exports['possible-gang-levels']:AddGangXPForPlayer(src, gangName, config.GangXPReward)
     elseif config.Framework == "esx" then
-        local source = source
-        local xPlayer = ESX.GetPlayerFromId(source)
+        local xPlayer = ESX.GetPlayerFromId(src)
         if not xPlayer then return end
         local gangName = xPlayer.job.name
-
-        exports['possible-gang-levels']:AddGangXPForPlayer(src, gangName, 5) -- Replace with the amount of XP to give
+        exports['possible-gang-levels']:AddGangXPForPlayer(src, gangName, config.GangXPReward)
     end
 end) 
