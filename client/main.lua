@@ -1,6 +1,7 @@
 lib.locale()
 local config = require('shared.config')
 local policeCount = nil 
+local currentATM = nil
 
 local function policeCall()
     if config.Dispatch == "ps-dispatch" then
@@ -24,8 +25,24 @@ local optionATM = {
         label = locale('target_label'),
         items = config.RequiredItem,
         distance = 2.5,
-        onSelect = function()
-            TriggerEvent('possible-atm-robbery:client:startHack')
+        onSelect = function(data)
+            local atmEntity = data.entity
+            local atmCoords = GetEntityCoords(atmEntity)
+            local atmKey = string.format("%.2f_%.2f_%.2f", atmCoords.x, atmCoords.y, atmCoords.z)
+            
+            if config.Debug then
+                print('ATM Entity: ' .. atmEntity)
+                print('ATM Position: ' .. atmCoords.x .. ', ' .. atmCoords.y .. ', ' .. atmCoords.z)
+                print('ATM Unique Key: ' .. atmKey)
+            end
+            
+            currentATM = {
+                entity = atmEntity,
+                coords = atmCoords,
+                uniqueKey = atmKey
+            }
+            
+            TriggerServerEvent('possible-atm-robbery:server:checkATMCooldown', currentATM)
         end
     }
 }
@@ -125,6 +142,22 @@ RegisterNetEvent('possible-atm-robbery:client:startHack', function()
 end)
 
 RegisterNetEvent('possible-atm-robbery:client:success', function()
-    TriggerServerEvent('possible-atm-robbery:server:giveReward', source)
+    if not currentATM then return end
+    TriggerServerEvent('possible-atm-robbery:server:giveReward', currentATM)
+    currentATM = nil
+end)
+
+RegisterNetEvent('possible-atm-robbery:client:atmCooldownResponse', function(isOnCooldown, cooldownMessage)
+    if isOnCooldown then
+        lib.notify({
+            title = locale('atm_cooldown_title'),
+            description = cooldownMessage,
+            type = 'error',
+            position = config.NotifPosition,
+            icon = config.NotifIcon
+        })
+    else
+        TriggerEvent('possible-atm-robbery:client:startHack')
+    end
 end)
 

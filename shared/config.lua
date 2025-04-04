@@ -24,5 +24,6 @@ return {
     DirtyCashType = 'markedbills', -- If using qb-inventory and cahs = false
     MinReward = 500, 
     MaxReward = 2000,
+    ATMCooldown = 900, -- Cooldown period in seconds (15 minutes) before an ATM can be hacked again
     NotifPosition = 'top'
 }

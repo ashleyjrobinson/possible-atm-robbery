@@ -3,6 +3,7 @@ local ox_inventory = exports.ox_inventory
 
 local cashA = config.MinReward
 local cashB = config.MaxReward
+local ATMCooldowns = {}
 
 if config.Framework == "qb" then
     QBCore = exports["qb-core"]:GetCoreObject()
@@ -38,17 +39,83 @@ PoliceCount = function()
     return jobCount
 end
 
+local function isATMOnCooldown(atmData)
+    
+    local atmKey = atmData.uniqueKey
+    
+    if config.Debug then
+        print("Checking cooldown for ATM: " .. atmKey)
+    end
+    
+    if ATMCooldowns[atmKey] then
+        local timeRemaining = ATMCooldowns[atmKey] - os.time()
+        if timeRemaining > 0 then
+            if config.Debug then
+                print("ATM on cooldown. Time remaining: " .. timeRemaining .. " seconds")
+            end
+            return true, timeRemaining
+        else
+            if config.Debug then
+                print("ATM cooldown expired, removing from tracking")
+            end
+            ATMCooldowns[atmKey] = nil
+            return false, 0
+        end
+    end
+    
+    if config.Debug then
+        print("ATM not on cooldown")
+    end
+    return false, 0
+end
+
+local function setATMOnCooldown(atmData)
+    if not atmData or not atmData.uniqueKey then 
+        if config.Debug then
+            print("Missing uniqueKey in atmData")
+        end
+        return 
+    end
+    
+    local atmKey = atmData.uniqueKey
+    
+    ATMCooldowns[atmKey] = os.time() + config.ATMCooldown
+    
+    if config.Debug then
+        print("Set cooldown for ATM: " .. atmKey .. " for " .. config.ATMCooldown .. " seconds")
+        print("Current ATM cooldowns: ")
+        for k, v in pairs(ATMCooldowns) do
+            local remaining = v - os.time()
+            print("  - ATM: " .. k .. ", Time remaining: " .. remaining .. " seconds")
+        end
+    end
+end
 
 RegisterServerEvent('possible-atm-robbery:server:requestPoliceCount', function()
     local policeCount = PoliceCount()  -- Call the function to get the police count
     TriggerClientEvent('possible-atm-robbery:client:receivePoliceCount', source, policeCount)  -- Send police count to the client
 end)
 
+RegisterServerEvent('possible-atm-robbery:server:checkATMCooldown', function(atmData)
+    local src = source
+    local onCooldown, timeRemaining = isATMOnCooldown(atmData)
+    
+    if onCooldown then
+        local minutes = math.floor(timeRemaining / 60)
+        local seconds = timeRemaining % 60
+        local cooldownMessage = string.format("This ATM was recently hacked. Available again in %d minutes and %d seconds", minutes, seconds)
+        TriggerClientEvent('possible-atm-robbery:client:atmCooldownResponse', src, true, cooldownMessage)
+    else
+        TriggerClientEvent('possible-atm-robbery:client:atmCooldownResponse', src, false)
+    end
+end)
 
-RegisterServerEvent('possible-atm-robbery:server:giveReward', function()
-    print('triggering give reward')
+RegisterServerEvent('possible-atm-robbery:server:giveReward', function(atmData)
     local src = source
     local reward = math.random(cashA, cashB)
+    
+    setATMOnCooldown(atmData)
+    
     if config.InventoryType == "qb-inventory" then    
     local Player = QBCore.Functions.GetPlayer(src)
 	local markedBillsBagsAmount = math.random(3,5) -- Range of marked bills bags for the player to randomly recieve

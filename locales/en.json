@@ -8,6 +8,7 @@
     "looting_signal_lost_title": "Signal Lost",
     "looting_signal_lost_description": "ATM Signal lost? Try again!",
     "not_enough_police_title": "Not Enough Police",
-    "not_enough_police_description": "There are not enough police online to hack the ATM!"
+    "not_enough_police_description": "There are not enough police online to hack the ATM!",
+    "atm_cooldown_title": "ATM Unavailable"
 }
   
