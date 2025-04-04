@@ -112,6 +112,23 @@ end)
 
 RegisterServerEvent('possible-atm-robbery:server:giveReward', function(atmData)
     local src = source
+    
+    -- Check if player is near the ATM before giving reward
+    if atmData and atmData.coords then
+        local playerPed = GetPlayerPed(src)
+        local playerCoords = GetEntityCoords(playerPed)
+        local atmCoords = vector3(atmData.coords.x, atmData.coords.y, atmData.coords.z)
+        local distance = #(playerCoords - atmCoords)
+        local maxDistance = 3.0
+        
+        if distance > maxDistance then
+            if config.Debug then
+                print("Player " .. src .. " attempted to get ATM reward while too far away - likely modding")
+            end
+            return
+        end
+    end
+    
     local reward = math.random(cashA, cashB)
     
     setATMOnCooldown(atmData)
