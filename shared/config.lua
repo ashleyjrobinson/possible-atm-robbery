@@ -17,7 +17,7 @@ return {
     TerritoriesInfluence = 10, -- Only relevant if PossibleTerritories is true
     TerritoriesRewardItem = 'cash', -- Only relevant if PossibleTerritories is true
     TerritoriesRewardAmount = 30, -- Only relevant if PossibleTerritories is true
-    PossibleGangLevel = true,  -- Integrates my paid gang levels script - https://possible-scripts.tebex.io/package/6036883 set false if no likey
+    PossibleGangLevels = true,  -- Integrates my paid gang levels script - https://possible-scripts.tebex.io/package/6036883 set false if no likey
     GangXPReward = 5, -- Only relevant if PossibleGangLevels is true
     Cash = true,
     CashItem = 'cash',

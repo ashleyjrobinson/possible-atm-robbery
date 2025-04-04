@@ -136,16 +136,28 @@ RegisterServerEvent('possible-atm-robbery:server:giveReward', function(atmData)
         ox_inventory:RemoveItem(src, config.RequiredItem, 1)
         ox_inventory:AddItem(src, config.CashItem, reward)
     end
+
+    if config.Framework == "qb" then
+        local Player = QBCore.Functions.GetPlayer(src)
+        if config.PossibleGangLevels and Player then
+            local gangName = Player.PlayerData.gang.name
+            local playerName = Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname
+            if gangName ~= "none" then
+                exports['possible-gang-levels']:AddGangXPForPlayer(src, gangName, config.GangXPReward, playerName)
+            end
+        end
+    elseif config.Framework == "esx" then
+        local Player = ESX.GetPlayerFromId(src)
+        if config.PossibleGangLevels and Player then
+            local gangName = Player.job.name
+            local playerName = Player.getName()
+            exports['possible-gang-levels']:AddGangXPForPlayer(src, gangName, config.GangXPReward, playerName)
+        end
+    end
     
     if config.PossibleTerritories then
         exports['possible-territories']:AddItemToStash(src, config.TerritoriesRewardItem, config.TerritoriesRewardAmount)
         exports['possible-territories']:UpdateInfluenceForGangInTerritory(src, config.TerritoriesInfluence)
-    end
-
-    if config.PossibleGangLevel and config.Framework == "qb" then
-        TriggerEvent('possible-atm-robbery:server:rewardGangXP')
-    elseif config.PossibleGangLevel and config.Framework == "esx" then
-        TriggerEvent('possible-atm-robbery:server:rewardGangXP')
     end
 end)
 
@@ -160,17 +172,3 @@ RegisterServerEvent('possible-atm-robbery:server:removeItem', function()
         ox_inventory:RemoveItem(src, config.RequiredItem, 1)
     end
 end)
-
-RegisterServerEvent('possible-atm-robbery:server:rewardGangXP', function()
-    local src = source
-    if config.Framework == "qb" then
-        local Player = QBCore.Functions.GetPlayer(src)
-        local gangName = Player.PlayerData.gang.name
-        exports['possible-gang-levels']:AddGangXPForPlayer(src, gangName, config.GangXPReward)
-    elseif config.Framework == "esx" then
-        local xPlayer = ESX.GetPlayerFromId(src)
-        if not xPlayer then return end
-        local gangName = xPlayer.job.name
-        exports['possible-gang-levels']:AddGangXPForPlayer(src, gangName, config.GangXPReward)
-    end
-end) 
