@@ -149,6 +149,18 @@ RegisterServerEvent('possible-atm-robbery:server:giveReward', function(atmData)
     end
 end)
 
+RegisterServerEvent('possible-atm-robbery:server:removeItem', function()
+    local src = source
+    if config.InventoryType == "qb-inventory" then
+    local Player = QBCore.Functions.GetPlayer(src)
+    if Player.Functions.RemoveItem(config.RequiredItem, 1) then
+        TriggerClientEvent("inventory:client:ItemBox", src, QBCore.Shared.Items[config.RequiredItem], "remove", 1)
+    end
+    elseif config.InventoryType == "ox_inventory" then
+        ox_inventory:RemoveItem(src, config.RequiredItem, 1)
+    end
+end)
+
 RegisterServerEvent('possible-atm-robbery:server:rewardGangXP', function()
     local src = source
     if config.Framework == "qb" then

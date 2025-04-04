@@ -93,6 +93,7 @@ local function onHackDone(success)
                 position = config.NotifPosition,
                 icon = config.NotifIcon
             })
+            TriggerServerEvent('possible-atm-robbery:server:removeItem')
         end
     else
         lib.notify({
