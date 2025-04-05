@@ -49,29 +49,25 @@ Copy & Paste this into ps-dispatch/client/cl_extraalerts.lua
 ---------------------------
 
 local function ATMHacking()
-    local currentPos = GetEntityCoords(PlayerPedId())
-    local locationInfo = getStreetandZone(currentPos)
-    local gender = GetPedGender()
-    TriggerServerEvent("dispatch:server:notify",{
-        dispatchcodename = "atmhacking", -- has to match the codes in sv_dispatchcodes.lua so that it generates the right blip
-        dispatchCode = "10-35",
-        firstStreet = locationInfo,
-        gender = gender,
-        model = nil,
-        plate = nil,
-        priority = 2, -- priority
-        firstColor = nil,
-        automaticGunfire = false,
-        origin = {
-            x = currentPos.x,
-            y = currentPos.y,
-            z = currentPos.z
-        },
-        dispatchMessage = 'ATM Hacking Reported', -- message
-        job = {"LEO", "police"} -- type or jobs that will get the alerts
-    })
+    local coords = GetEntityCoords(cache.ped)
+
+    local dispatchData = {
+        message = locale('atmhacking'),
+        codeName = 'atmhacking',
+        code = '10-90',
+        icon = 'fas fa-phone',
+        priority = 2,
+        coords = coords,
+        gender = GetPlayerGender(),
+        street = GetStreetAndZone(coords),
+        alertTime = nil,
+        jobs = { 'leo' }
+    }
+
+    TriggerServerEvent('ps-dispatch:server:notify', dispatchData)
 end
 exports('ATMHacking', ATMHacking)
+
 ```
 
 ## Compatibility:
