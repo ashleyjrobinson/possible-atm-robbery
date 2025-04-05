@@ -122,9 +122,7 @@ RegisterServerEvent('possible-atm-robbery:server:giveReward', function(atmData)
         local maxDistance = 3.0
         
         if distance > maxDistance then
-            if config.Debug then
-                print("Player " .. src .. " attempted to get ATM reward while too far away - likely modding")
-            end
+            print("Player " .. src .. " attempted to get ATM reward while too far away - likely modding")
             return
         end
     end
